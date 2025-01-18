@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
+import TranslatorUI from "./TranslateUI";
 
 function HomePage() {
   return (
     <>
       <div>
-        Homepage
-        <div>hello</div>
+        <TranslatorUI />
       </div>
     </>
   );
