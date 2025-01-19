@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 import { RefreshCcw } from "lucide-react";
 import axios from "axios";
+// import Toast from "../../src/components/ui/Toast";
 
 export default function CreateBlog() {
   // const [title, setTitle] = useState("");
@@ -80,7 +81,7 @@ export default function CreateBlog() {
 
       // Make the POST request with JSON data
       const response = await axios.post(
-        "http://localhost:8000/translate", // Replace with the correct endpoint
+        `${import.meta.env.VITE_SERVER_BASE_URL}translate`, // Replace with the correct endpoint
         {
           target_language: formData.language,
           text: formData.title,
@@ -94,6 +95,8 @@ export default function CreateBlog() {
 
       // Log the response
       console.log("Response:", response.data);
+      Toast.showSuccessToast("Title translated successfully");
+
       setres((prevRes) => ({
         ...prevRes,
         title: response.data.translation,
@@ -119,7 +122,7 @@ export default function CreateBlog() {
 
         // Make the POST request with the form data
         const videoResponse = await axios.post(
-          "http://localhost:8000/video-to-text", // Replace with your API endpoint
+          `${import.meta.env.VITE_SERVER_BASE_URL}video-to-text`, // Replace with your API endpoint
           formData, // Send the formData containing the file
           {
             headers: {
@@ -158,7 +161,7 @@ export default function CreateBlog() {
 
           // Make the POST request with JSON data
           const response = await axios.post(
-            "http://localhost:8000/translate", // Replace with the correct endpoint
+            "translate", // Replace with the correct endpoint
             {
               target_language: formData.language,
               text: formData.description,
@@ -181,6 +184,47 @@ export default function CreateBlog() {
           console.error("Error fetching docs:", error);
         }
       }
+    }
+  };
+
+  const handlePublish = async () => {
+    if (!formData.title || !formData.description || !selectedImage) {
+      console.error(
+        "Validation failed: Title, description, and image are required."
+      );
+      return;
+    }
+
+    try {
+      // Create FormData
+      const publishFormData = new FormData();
+      publishFormData.append("title", formData.title);
+      publishFormData.append("desc", formData.description);
+      publishFormData.append("image", selectedImage); // File object for the image
+
+      // Log FormData content for debugging (use `for...of` to iterate)
+      for (let [key, value] of publishFormData.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+      // Make the POST request
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_BASE_URL}translate-and-send`, // Replace with the correct endpoint
+        publishFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Axios sets the correct boundary for FormData
+          },
+        }
+      );
+
+      // Log the response
+      console.log("Publish response:", response.data);
+
+      // Optional: Handle success (e.g., show a success message or redirect)
+    } catch (error) {
+      // Log any errors
+      console.error("Error during publish:", error);
     }
   };
 
@@ -356,7 +400,10 @@ export default function CreateBlog() {
               <button className="px-6 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-200 focus:outline-none">
                 Save Draft
               </button>
-              <button className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">
+              <button
+                onClick={() => handlePublish()}
+                className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+              >
                 Publish
               </button>
             </div>
