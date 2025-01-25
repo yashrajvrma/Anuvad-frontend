@@ -7,15 +7,19 @@ const LanguageSelector = () => {
   const navigate = useNavigate();
 
   const languages = [
-    { code: "en", name: "English" },
-    { code: "es", name: "Spanish" },
-    { code: "fr", name: "French" },
-    { code: "de", name: "German" },
-    { code: "it", name: "Italian" },
-    { code: "zh", name: "Chinese" },
-    { code: "ja", name: "Japanese" },
-    { code: "ba", name: "Bhojpuri" },
-    { code: "a", name: "Arabic" },
+    { name: "English" },
+    { name: "Hindi" },
+    { name: "Marathi" },
+    { name: "Bhojpuri" },
+    { name: "Tamil" },
+    { name: "Malayalam" },
+    { name: "Spanish" },
+    { name: "French" },
+    { name: "German" },
+    { name: "Italian" },
+    { name: "Chinese" },
+    { name: "Japanese" },
+    { name: "Arabic" },
   ];
 
   const handleSpeakNowClick = () => {
@@ -38,7 +42,7 @@ const LanguageSelector = () => {
         <div className="mb-4">
           <label
             htmlFor="source-language-select"
-            className="block font-medium text-gray-700 mb-2"
+            className="block  text-gray-900 mb-2 text-lg font-bold"
           >
             Source Language
           </label>
@@ -50,7 +54,7 @@ const LanguageSelector = () => {
             aria-label="Select the source language"
           >
             <option value="" disabled>
-              Select Source Language
+              Source
             </option>
             {languages.map((language) => (
               <option key={language.code} value={language.name}>
@@ -63,7 +67,7 @@ const LanguageSelector = () => {
         <div className="mb-6">
           <label
             htmlFor="target-language-select"
-            className="block font-medium text-gray-700 mb-2"
+            className="block text-gray-900 mb-2 text-lg font-bold"
           >
             Target Language
           </label>
@@ -75,7 +79,7 @@ const LanguageSelector = () => {
             aria-label="Select the target language"
           >
             <option value="" disabled>
-              Select Target Language
+              Target
             </option>
             {languages.map((language) => (
               <option key={language.code} value={language.name}>

@@ -7,7 +7,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate("/language-selection");
+    navigate("/language/selection");
   };
   return (
     <div className="min-h-screen bg-gray-50">
@@ -50,21 +50,17 @@ export default function Home() {
           </div>
 
           {/* <BrowserMockup /> */}
-          <div className="flex flex-row gap-4 justify-center items-center mt-28">
+          <div className="flex flex-row gap-8 justify-center items-center mt-20">
             <img
-              className="w-48"
-              src="../../public/assets/images/WhatsApp Image 2025-01-25 at 3.59.06 AM.jpeg"
+              className="w-48 rotate-[-0.349066rad] pt-24"
+              src="/assets/images/1.png"
               alt="letter-svg"
             />
+            <img className="w-48" src="/assets/images/2.png" alt="1-svg" />
             <img
-              className="w-48"
-              src="../../public/assets/images/WhatsApp Image 2025-01-25 at 3.59.06 AM.jpeg"
-              alt="letter-svg"
-            />
-            <img
-              className="w-48"
-              src="../../public/assets/images/WhatsApp Image 2025-01-25 at 3.59.06 AM.jpeg"
-              alt="letter-svg"
+              className="w-48 pt-24 rotate-[0.349066rad]"
+              src="/assets/images/3.png"
+              alt="2-svg"
             />
           </div>
         </div>

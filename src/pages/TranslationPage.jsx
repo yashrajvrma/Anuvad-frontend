@@ -115,7 +115,11 @@ function TranslationPage() {
         <div className="w-full max-w-2xl text-center mt-8">
           {listening ? (
             <div className="mt-6">
-              <p className="text-xl text-gray-700 mb-4">Listening...</p>
+              {isTranslating ? (
+                <p className="text-lg text-gray-600 mt-6">Translating...</p>
+              ) : (
+                <p className="text-xl text-gray-700 mb-4">Listening...</p>
+              )}
               <button
                 onClick={() => SpeechRecognition.stopListening()}
                 className="bg-black text-white py-4 px-8 rounded-full text-lg hover:bg-white hover:text-black border border-black transition"
@@ -127,7 +131,7 @@ function TranslationPage() {
             <div className="mt-6">
               <button
                 onClick={handleStartListening}
-                className="bg-neutral text-white py-4 px-8 rounded-full text-lg hover:bg-neutral-900 border border-black transition"
+                className="bg-neutral-800 text-white py-4 px-8 rounded-full text-lg hover:bg-neutral-900 border border-black transition"
               >
                 Start Listening
               </button>
@@ -143,10 +147,6 @@ function TranslationPage() {
                 {transcript}
               </p>
             </div>
-          )}
-
-          {isTranslating && (
-            <p className="text-lg text-gray-600 mt-6">Translating...</p>
           )}
         </div>
       </div>
