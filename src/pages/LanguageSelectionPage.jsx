@@ -9,7 +9,6 @@ const LanguageSelector = () => {
   const languages = [
     { name: "English" },
     { name: "Hindi" },
-    { name: "Marathi" },
     { name: "Bhojpuri" },
     { name: "Tamil" },
     { name: "Malayalam" },

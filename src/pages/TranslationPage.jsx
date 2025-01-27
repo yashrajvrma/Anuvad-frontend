@@ -4,17 +4,14 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { useSearchParams } from "react-router-dom";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 function TranslationPage() {
   const [searchParams] = useSearchParams();
   const sourceLanguage = searchParams.get("source");
   const targetLanguage = searchParams.get("target");
-
-  console.log(sourceLanguage);
-  console.log(targetLanguage);
+  const [showBtn, setShowBtn] = useState(false);
 
   const {
     transcript,
@@ -26,6 +23,7 @@ function TranslationPage() {
   const audioContextRef = useRef(null);
   const latestTranscriptRef = useRef("");
   const timeoutRef = useRef(null);
+  const lottieRef = useRef(null); // Ref for the Lottie animation
 
   const handleStartListening = () => {
     if (!browserSupportsSpeechRecognition) return;
@@ -43,7 +41,9 @@ function TranslationPage() {
 
   const sendToBackend = async (text) => {
     if (!text.trim()) return;
+    setShowBtn(true);
     setIsTranslating(true);
+    lottieRef.current?.pause(); // Pause Lottie animation
 
     try {
       const response = await axios.get(
@@ -78,7 +78,10 @@ function TranslationPage() {
       console.error("Error translating text and streaming audio:", error);
     } finally {
       resetTranscript();
+      setShowBtn(false);
+
       setIsTranslating(false);
+      lottieRef.current?.play(); // Resume Lottie animation
     }
   };
 
@@ -106,6 +109,7 @@ function TranslationPage() {
     <div className="flex flex-col justify-center items-center min-h-screen w-full bg-white font-poppins px-4">
       <div className="w-full max-w-screen-xl flex flex-col justify-center items-center py-16">
         <DotLottieReact
+          ref={lottieRef} // Attach the ref to the Lottie component
           src="https://lottie.host/a192161b-be15-4e25-824e-4d28e56c20f0/156r6MfLUc.lottie"
           loop
           autoplay
@@ -119,6 +123,7 @@ function TranslationPage() {
               <button
                 onClick={() => SpeechRecognition.stopListening()}
                 className="bg-black text-white py-4 px-8 rounded-full text-lg hover:bg-white hover:text-black border border-black transition"
+                disabled={showBtn}
               >
                 Stop Speaking
               </button>
@@ -128,6 +133,7 @@ function TranslationPage() {
               <button
                 onClick={handleStartListening}
                 className="bg-neutral-800 text-white py-4 px-8 rounded-full text-lg hover:bg-neutral-900 border border-black transition"
+                disabled={showBtn}
               >
                 Start Speaking
               </button>
@@ -136,9 +142,6 @@ function TranslationPage() {
 
           {transcript && (
             <div className="mt-8">
-              {/* <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                Transcribed Text:
-              </h3> */}
               <p className="text-lg text-gray-600 leading-relaxed">
                 {transcript}
               </p>
